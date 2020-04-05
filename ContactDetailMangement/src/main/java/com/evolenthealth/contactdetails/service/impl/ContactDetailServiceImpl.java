@@ -55,11 +55,11 @@ public class ContactDetailServiceImpl implements ContactDetailService {
 		for(Contact contactdata : contactList) {
 			if(contact.getContactID().equals(contactdata.getContactID())) {
 				contactList.remove(contactdata);
+				contact.setStatus(contactdata.getStatus());
 				contactList.add(contact);
 				return contact;
 			}
 		}
-		
 		// TODO Auto-generated method stub
 		return null;
 	}

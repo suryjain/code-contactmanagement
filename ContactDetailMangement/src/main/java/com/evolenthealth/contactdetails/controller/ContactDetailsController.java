@@ -7,7 +7,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +40,20 @@ public class ContactDetailsController {
 			throw new ContactDetailNotFoundException("Contact ID : "+ contactID);
 		}
 		return contact;
+	}
+	
+	@RequestMapping(value="/contactdetails/{contactID}", method = RequestMethod.POST)
+	public ResponseEntity<Contact> updateContactDetails(@PathVariable("contactID") String contactID , @Valid @RequestBody Contact contact ) {
+		if(contactID==null || !contactID.equals(contact.getContactID())) {
+				return new ResponseEntity<Contact>(contact,HttpStatus.BAD_REQUEST);
+		}
+		Contact contactData = contactDetailService.updateContactRequest(contact);
+		
+		if(contactData==null) {
+			throw new ContactDetailNotFoundException("Contact ID : "+ contactID);
+		}
+		return new ResponseEntity<Contact>(contactData,HttpStatus.OK);
+		//return ResponseEntity.ok("{path : "+location + "}");
 	}
 	
 	@RequestMapping(value="/contactdetails", method = RequestMethod.GET)
